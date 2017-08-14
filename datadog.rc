@@ -1,0 +1,2 @@
+export DATADOG_APIKEY=$(lpass show --notes "Datadog API" | grep api_key | sed -e "s/api_key: //")
+export DATADOG_APPKEY=$(lpass show --notes "Datadog API" | grep app_key | sed -e "s/app_key: //")

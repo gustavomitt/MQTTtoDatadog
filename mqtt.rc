@@ -1,0 +1,4 @@
+export MQTTSERVER=$(lpass show --url "CloudMQTT_API" | sed -e "s#http://##")
+export MQTTUSER=$(lpass show --username "CloudMQTT_API")
+export MQTTPASSWORD=$(lpass show --password "CloudMQTT_API")
+export MQTTPORT=$(lpass show --notes "CloudMQTT_API" | grep "^Port:" | sed -e "s/Port: //")
