@@ -6,6 +6,21 @@ Project to read humidity data from vase sent to MQTT and send it some datalog se
 ```
 docker build -t read_mqtt:v1 .
 ```
+## To run tests
+source ~/MQTTtoDatadog/mqtt.rc
+source ~/MQTTtoDatadog/datadog.rc
+```
+docker run -it \
+  -e MQTTSERVER \
+  -e MQTTUSER \
+  -e MQTTPASSWORD \
+  -e MQTTPORT \
+  -e DATADOG_APIKEY \
+  -e DATADOG_APPKEY \
+  read_mqtt:v1 \
+  python /app/test.py
+```
+
 ## To run test docker image
 source ~/MQTTready/mqtt.rc
 source ~/MQTTready/datadog.rc

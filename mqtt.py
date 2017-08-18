@@ -7,6 +7,21 @@ from datadog import initialize, api
 import json
 import time
 
+# Setup datalog connection
+def setup_datalog():
+    options = { 'api_key': os.environ['DATADOG_APIKEY'], 'app_key': os.environ['DATADOG_APPKEY'] }
+    initialize(**options)
+
+
+# Get Datalog metricJson
+def get_datalog_metric(start,end,query):
+    return api.Metric.query(start=start, end=end, query=query)
+
+
+# Get Datalog metricJson
+def set_datalog_metric(metric,timestamp,value,host):
+    return api.Metric.send(metric=metric, points=(timestamp,value),host=host)
+
 # Define event callbacks
 def on_connect(client, userdata, flags, rc):
     logger.info("Connected with result code "+str(rc))
@@ -18,8 +33,9 @@ def on_message(mosq, obj, msg):
     logger.info(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
     metricJson = json.loads(str(msg.payload))
     sadasd = metricJson['status']
-    logger.info("Status: " + float(metricJson['status']))
-    resp = api.Metric.send(metric='vase.humidity', points=(time.time(), float(metricJson['status'])),host='vase')
+    logger.info("Status: " + metricJson['status'])
+    resp = set_datalog_metric('vase.humidity',time.time(),float(metricJson['status']),'vase')
+    #resp = api.Metric.send(metric='vase.humidity', points=(time.time(), float(metricJson['status'])),host='vase')
     logger.info("Response: " + str(resp))
 
 def on_publish(mosq, obj, mid):
@@ -51,8 +67,7 @@ if __name__ == '__main__':
     logger = intLogging()
 
     # init datadog
-    options = { 'api_key': os.environ['DATADOG_APIKEY'], 'app_key': os.environ['DATADOG_APPKEY'] }
-    initialize(**options)
+    setup_datalog()
 
     # get data files
     mqttc = paho.Client()
@@ -82,7 +97,8 @@ if __name__ == '__main__':
 
 
     # Continue the network loop, exit when an error occurs
-    rc = 0
-    while rc == 0:
+    #rc = 0
+    while True:
         rc = mqttc.loop()
-    logger.info("rc: " + str(rc))
+        if rc != 0:
+            logger.info("rc: " + str(rc))

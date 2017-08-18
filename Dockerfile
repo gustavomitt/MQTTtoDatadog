@@ -12,6 +12,8 @@ RUN pip install datadog
 
 # Copy application files
 COPY mqtt.py /app/
+# Copy test files
+COPY test.py /app/
 
 
 
