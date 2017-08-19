@@ -99,6 +99,6 @@ if __name__ == '__main__':
     # Continue the network loop, exit when an error occurs
     #rc = 0
     while True:
-        rc = mqttc.loop()
+        rc = mqttc.loop_forever()
         if rc != 0:
-            logger.info("rc: " + str(rc))
+            logger.info("rc: " + mqttc.error_string(rc))
