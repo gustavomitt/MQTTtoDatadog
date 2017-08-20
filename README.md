@@ -4,7 +4,8 @@ Project to read humidity data from vase sent to MQTT and send it some datalog se
 
 ## Build the image
 ```
-docker build -t read_mqtt:v1 .
+PROJECT_ID="$(gcloud config get-value project)"
+docker build -t gcr.io/${PROJECT_ID}/read_mqtt:v1 .
 ```
 ## To run tests
 source ~/MQTTtoDatadog/mqtt.rc
@@ -37,25 +38,24 @@ docker run -it \
 ## copiar a imagem para o Google Cloud Engine
 ```
 PROJECT_ID="$(gcloud config get-value project)"
-gcloud docker -- push gcr.io/${PROJECT_ID}/get-sales-data:v2
+gcloud docker -- push gcr.io/${PROJECT_ID}/read_mqtt:v1
 ```
 ## criar os segredos no kubernetes
 ```
-source ~/mssql.rc
-kubectl create secret generic sqlserver \
-      --from-literal=SQLCMDSERVER=$SQLCMDSERVER \
-      --from-literal=SQLCMDUID=$SQLCMDUID \
-      --from-literal=SQLCMDPASSWORD=$SQLCMDPASSWORD
-kubectl create secret generic openvpn --from-file ~/openvpn/client.ovpn
-kubectl create secret generic criar-arquivo-json --from-file <path to json>
-kubectl create secret generic criar-arquivo-boto --from-file <path to boto>
-kubectl create secret generic ver-arquivo-json --from-file <path to json>
-kubectl create secret generic ver-arquivo-boto --from-file <path to boto>
-kubectl create secret generic file-and-pubsub-rw --from-file <path to boto>
+source ~/MQTTtoDatadog/mqtt.rc
+source ~/MQTTtoDatadog/datadog.rc
+kubectl create secret generic mqtt \
+      --from-literal=MQTTSERVER=$MQTTSERVER \
+      --from-literal=MQTTUSER=$MQTTUSER \
+      --from-literal=MQTTPASSWORD=$MQTTPASSWORD \
+      --from-literal=MQTTPORT=$MQTTPORT
+kubectl create secret generic datadog \
+      --from-literal=DATADOG_APIKEY=$DATADOG_APIKEY \
+      --from-literal=DATADOG_APPKEY=$DATADOG_APPKEY
 ```
 ## criar o deployment no kubernetes
 ```
-kubectl create -f ~/kubernetesCluster/getSalesData/get-sales-data-deployment.yaml  
+kubectl create -f ~/MQTTtoDatadog/getSalesData/get-sales-data-deployment.yaml  
 ```
 ## entrar no pod para testes
 ```
