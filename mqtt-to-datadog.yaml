@@ -1,0 +1,45 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mqtt-to-datadog
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mqtt-to-datadog
+    spec:
+      containers:
+      - name: mqtt-to-datadog
+        image: gcr.io/clusteractar/read_mqtt:v1
+        env:
+          - name: DATADOG_APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: datadog
+                key: DATADOG_APIKEY
+          - name: DATADOG_APPKEY
+            valueFrom:
+              secretKeyRef:
+                name: datadog
+                key: DATADOG_APPKEY
+          - name: MQTTSERVER
+            valueFrom:
+              secretKeyRef:
+                name: mqtt
+                key: MQTTSERVER
+          - name: MQTTUSER
+            valueFrom:
+              secretKeyRef:
+                name: mqtt
+                key: MQTTUSER
+          - name: MQTTPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mqtt
+                key: MQTTPASSWORD
+          - name: MQTTPORT
+            valueFrom:
+              secretKeyRef:
+                name: mqtt
+                key: MQTTPORT

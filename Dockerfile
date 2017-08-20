@@ -1,8 +1,9 @@
 # image for amd
 #FROM python:2.7
+FROM python:2.7-alpine3.6
 
 # image for raspberry pi
-FROM hypriot/rpi-python
+#FROM hypriot/rpi-python
 
 # Install required packages
 #RUN apt-get update
