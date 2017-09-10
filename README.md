@@ -8,9 +8,9 @@ PROJECT_ID="$(gcloud config get-value project)"
 docker build -t gcr.io/${PROJECT_ID}/read_mqtt:v1 .
 ```
 ## To run tests
+```
 source ~/MQTTtoDatadog/mqtt.rc
 source ~/MQTTtoDatadog/datadog.rc
-```
 docker run -it \
   -e MQTTSERVER \
   -e MQTTUSER \
@@ -23,9 +23,9 @@ docker run -it \
 ```
 
 ## To run test docker image
+```
 source ~/MQTTready/mqtt.rc
 source ~/MQTTready/datadog.rc
-```
 docker run -it \
   -e MQTTSERVER \
   -e MQTTUSER \
