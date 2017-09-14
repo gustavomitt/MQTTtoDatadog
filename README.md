@@ -7,7 +7,7 @@ Project to read humidity data from vase sent to MQTT and send it some datalog se
 PROJECT_ID="$(gcloud config get-value project)"
 docker build -t gcr.io/${PROJECT_ID}/read_mqtt:v1 .
 ```
-## To run tests
+## To run unit tests
 ```
 source ~/MQTTtoDatadog/mqtt.rc
 source ~/MQTTtoDatadog/datadog.rc
