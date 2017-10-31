@@ -9,8 +9,8 @@ docker build -t gcr.io/${PROJECT_ID}/read_mqtt:v1 .
 ```
 ## To run unit tests
 ```
-source ~/MQTTtoDatadog/mqtt.rc
-source ~/MQTTtoDatadog/datadog.rc
+source ~/github/MQTTtoDatadog/mqtt.rc
+source ~/github/MQTTtoDatadog/datadog.rc
 docker run -it \
   -e MQTTSERVER \
   -e MQTTUSER \
@@ -18,14 +18,14 @@ docker run -it \
   -e MQTTPORT \
   -e DATADOG_APIKEY \
   -e DATADOG_APPKEY \
-  read_mqtt:v1 \
+  gcr.io/clusteractar/read_mqtt:v1 \
   python /app/test.py
 ```
 
 ## To run test docker image
 ```
-source ~/MQTTready/mqtt.rc
-source ~/MQTTready/datadog.rc
+source ~/github/MQTTtoDatadog/mqtt.rc
+source ~/github/MQTTtoDatadog/datadog.rc
 docker run -it \
   -e MQTTSERVER \
   -e MQTTUSER \
@@ -33,7 +33,7 @@ docker run -it \
   -e MQTTPORT \
   -e DATADOG_APIKEY \
   -e DATADOG_APPKEY \
-  read_mqtt:v1
+  gcr.io/clusteractar/read_mqtt:v1
 ```
 ## copiar a imagem para o Google Cloud Engine
 ```
